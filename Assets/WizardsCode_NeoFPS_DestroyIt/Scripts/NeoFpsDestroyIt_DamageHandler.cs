@@ -23,8 +23,17 @@ namespace WizardsCode.NeoFPS.DestroyIt
             set { }
         }
 
+        public IHealthManager healthManager
+        {
+            get; private set;
+        }
+
         private void Awake()
         {
+            healthManager = GetComponentInParent<IHealthManager>();
+            if (healthManager == null || m_Multiplier <= 0f)
+                enabled = false;
+
             m_Destructible = GetComponentInParent<Destructible>();
             Debug.Assert(m_Destructible != null, gameObject.name + " has a NeoFPS DestroyIt Damage Handler but it is not a destructible. Disabling the damage handler.");
             if (m_Destructible == null) DestroyImmediate(this);
